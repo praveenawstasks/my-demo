@@ -1,4 +1,4 @@
-from spark_util import SparkClient
+from util.spark_util import SparkClient
 
 class Driver:
     def __init__(self):
