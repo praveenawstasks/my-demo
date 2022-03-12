@@ -15,8 +15,9 @@ class Driver:
         self.spark_client = SparkClient()
 
     def get_module(self):
-        print(f"Fetching module {self.source_key.split('.')[0]}...")
-        module_name = module_map[self.source_key.split('.')[0]]
+        job_identifier = self.source_key.split('.')[0].split('/')[1]
+        print(f"Fetching module {job_identifier}...")
+        module_name = module_map[job_identifier]
         module_spec = importlib.util.find_spec(f"config.{module_name}")
         module = importlib.util.module_from_spec(module_spec)
         module_spec.loader.exec_module(module)
