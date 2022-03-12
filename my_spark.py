@@ -33,7 +33,7 @@ def calculate_red_violations():
         top_red_violation_restaurants.show(4)
 
         # Write the results to the specified output URI
-        output_uri = "s3://praveen-demo-bucket1/input/"
+        output_uri = "s3://praveen-demo-bucket1/output/result"
         top_red_violation_restaurants.write.option("header", "true").mode("overwrite").csv(output_uri)
         print('Process completed...')
 
