@@ -29,11 +29,11 @@ class Driver:
         print(module.config)
         etl_obj = EtlProcess(self.source_bucket, self.source_key, module.config, self.spark_client)
         etl_obj.do_etl_process()
-        bucket = 'praveen-demo-bucket1'
-        key = 'input/revenue_data.tsv'
-        df = self.spark_client.read_csv(bucket,key, delimiter='	')
-        print('Printing dataframe..')
-        df.show()
+        # bucket = 'praveen-demo-bucket1'
+        # key = 'input/revenue_data.tsv'
+        # df = self.spark_client.read_csv(bucket,key, delimiter='	')
+        # print('Printing dataframe..')
+        # df.show()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
