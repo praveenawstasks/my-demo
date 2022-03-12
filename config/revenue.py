@@ -1,4 +1,4 @@
-
+from util.util import today_date
 
 config = {
     'extract':  [{'prefix': 'revenue_data', 'file_type': 'csv', 'delimiter': '	'}],
@@ -7,5 +7,7 @@ config = {
                             """,
                   'table_name': 'temp_revenue_data'
                  },
-    'load': {}
+    'load': {'output_file_name': f"{today_date()}_SearchKeywordPerformance.tab",
+             'delimiter': '	',
+             'output_key': "output/results/"}
 }

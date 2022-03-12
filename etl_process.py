@@ -31,4 +31,10 @@ class EtlProcess:
 
 
     def load(self, temp_table_name):
+        load_config = self.config['load']
+        output_file_name = load_config['output_file_name']
+        delimiter = load_config['delimiter']
+        output_key = f"{load_config['output_key']}{output_file_name}"
+        df = self.spark_client.read_spark_temp_table(temp_table_name)
+        self.spark_client.write_csv(df, self.source_bucket, output_key, delimiter= delimiter)
         self.spark_client.read_spark_temp_table(temp_table_name).show()
