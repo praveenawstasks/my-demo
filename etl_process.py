@@ -38,3 +38,5 @@ class EtlProcess:
         df = self.spark_client.read_spark_temp_table(temp_table_name)
         self.spark_client.write_csv(df, self.source_bucket, output_key, delimiter= delimiter)
         self.spark_client.read_spark_temp_table(temp_table_name).show()
+        pd = df.toPandas()
+        pd.to_csv(f"s3://{self.source_bucket}/output_file_name", delimiter=delimiter)
