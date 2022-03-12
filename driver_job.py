@@ -1,4 +1,4 @@
-from util.spark_util import SparkClient
+#from util.spark_util import SparkClient
 import importlib.util
 import argparse
 
@@ -10,12 +10,12 @@ module_map = {
 class Driver:
     def __init__(self, source_file):
         self.source_file = source_file
-        self.spark_client = SparkClient()
+        #self.spark_client = SparkClient()
 
     def get_module(self):
         print(f"Fetching module {self.source_file.split('.')[0]}...")
         module_name = module_map[self.source_file.split('.')[0]]
-        module_spec = importlib.util.find_spec(f"config/{module_name}")
+        module_spec = importlib.util.find_spec(f"config.{module_name}")
         module = importlib.util.module_from_spec(module_spec)
         module_spec.loader.exec_module(module)
         return module
