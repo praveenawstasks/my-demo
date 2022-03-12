@@ -8,8 +8,8 @@ class EtlProcess:
 
     def do_etl_process(self):
         self.extract()
-        self.transform()
-        self.load()
+        temp_table_name = self.transform()
+        self.load(temp_table_name)
 
     def extract(self):
         extract_config = self.config['extract']
@@ -21,10 +21,14 @@ class EtlProcess:
                     delimiter = conf['delimiter']
                     df = self.spark_client.read_csv(self.source_bucket, self.source_key, delimiter = delimiter)
                     df.createOrReplaceTempView(table_name)
-        df.show()
 
     def transform(self):
-        pass
+        transform_config = self.config['transform']
+        query = transform_config['query']
+        temp_table_name = transform_config['table_name']
+        self.spark_client.read_spark_query(query).createOrReplaceTempView(temp_table_name)
+        return temp_table_name
 
-    def load(self):
-        pass
+
+    def load(self, temp_table_name):
+        self.spark_client.read_spark_temp_table(temp_table_name).show()
