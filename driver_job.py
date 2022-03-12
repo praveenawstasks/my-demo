@@ -25,7 +25,7 @@ class Driver:
         module = self.get_module()
         print(module.config)
         bucket = 'praveen-demo-bucket1'
-        key = 'input/data.tsv'
+        key = 'input/revenue_data.tsv'
         df = self.spark_client.read_csv(bucket,key, delimiter='	')
         print('Printing dataframe..')
         df.show()
