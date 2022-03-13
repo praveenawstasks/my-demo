@@ -9,7 +9,7 @@ provider "aws" {
 terraform {
   backend "s3" {
     bucket = "my-demo-terraform-state-bucket"
-    key = "cloudgeeks.tfstate"
+    key = "my-demo.tfstate"
     region = "us-east-1"
   }
 }
