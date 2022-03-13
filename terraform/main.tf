@@ -16,7 +16,7 @@ terraform {
 }
 
 module "vpc" {
-  source = "aws-vpc"
+  source = "terraform_modules/aws-vpc"
 
   vpc-location                        = "Virginia"
   namespace                           = "my-demo-emr-vpc"
