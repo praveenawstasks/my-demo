@@ -15,3 +15,12 @@ terraform {
   }
 }
 
+module "vpc" {
+  source = "vpc"
+
+  vpc-location                        = "Virginia"
+  namespace                           = "my-demo-emr-vpc"
+  name                                = "vpc"
+  stage                               = "main"
+  vpc-cidr                            = "172.31.0.0/16"
+}
