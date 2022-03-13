@@ -6,6 +6,7 @@ provider "aws" {
 # S3 for terraform state
 ###############
 
+
 terraform {
   backend "s3" {
     bucket = "my-demo-terraform-state-bucket"
