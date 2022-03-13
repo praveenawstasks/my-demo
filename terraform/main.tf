@@ -31,3 +31,13 @@ resource "aws_vpc" "vpc" {
     Name    = "My Demo EMR VPC"
   }
 }
+
+# Create Internet Gateway and Attach it to VPC
+# terraform aws create internet gateway
+resource "aws_internet_gateway" "internet-gateway" {
+  vpc_id    = aws_vpc.vpc.id
+
+  tags      = {
+    Name    = "My Demo IGW"
+  }
+}
