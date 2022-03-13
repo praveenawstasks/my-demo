@@ -206,39 +206,5 @@ resource "aws_emr_cluster" "emr-cluster" {
     Name = "My Demo Spark cluster"
   }
 
-  autoscaling_policy = <<EOF
-{
-"Constraints": {
-  "MinCapacity": 1,
-  "MaxCapacity": 2
-},
-"Rules": [
-  {
-    "Name": "ScaleOutMemoryPercentage",
-    "Description": "Scale out if YARNMemoryAvailablePercentage is less than 15",
-    "Action": {
-      "SimpleScalingPolicyConfiguration": {
-        "AdjustmentType": "CHANGE_IN_CAPACITY",
-        "ScalingAdjustment": 1,
-        "CoolDown": 300
-      }
-    },
-    "Trigger": {
-      "CloudWatchAlarmDefinition": {
-        "ComparisonOperator": "LESS_THAN",
-        "EvaluationPeriods": 1,
-        "MetricName": "YARNMemoryAvailablePercentage",
-        "Namespace": "AWS/ElasticMapReduce",
-        "Period": 300,
-        "Statistic": "AVERAGE",
-        "Threshold": 15.0,
-        "Unit": "PERCENT"
-      }
-    }
-  }
-]
-}
-EOF
-
   service_role = aws_iam_role.iam_emr_service_role.arn
 }
