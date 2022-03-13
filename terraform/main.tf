@@ -69,3 +69,197 @@ resource "aws_subnet" "EMR_public_subnet" {
     Name    = "My Demo Subnet"
   }
 }
+
+#
+# Security group resources
+#
+resource "aws_security_group" "emr_master" {
+  vpc_id                 = aws_vpc.vpc.id
+  revoke_rules_on_delete = true
+
+  tags = {
+    Name = "sg-my-demo-Master"
+  }
+}
+
+resource "aws_security_group" "emr_slave" {
+  vpc_id                 = aws_vpc.vpc.id
+  revoke_rules_on_delete = true
+
+  tags = {
+    Name = "sg-my-demo-Slave"
+  }
+}
+
+# IAM Role for EC2 Instance Profile
+resource "aws_iam_role" "iam_emr_profile_role" {
+  name = "iam_emr_profile_role"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2008-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}
+
+# IAM role for EMR Service
+resource "aws_iam_role" "iam_emr_service_role" {
+  name = "iam_emr_service_role"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2008-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "elasticmapreduce.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy" "iam_emr_service_policy" {
+  name = "iam_emr_service_policy"
+  role = aws_iam_role.iam_emr_service_role.id
+
+  policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [{
+        "Effect": "Allow",
+        "Resource": "*",
+        "Action": "*"
+    }]
+}
+EOF
+}
+
+# IAM Role for EC2 Instance Profile
+resource "aws_iam_role" "iam_emr_profile_role" {
+  name = "iam_emr_profile_role"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2008-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_instance_profile" "emr_profile" {
+  name = "emr_profile"
+  role = aws_iam_role.iam_emr_profile_role.name
+}
+
+resource "aws_iam_role_policy" "iam_emr_profile_policy" {
+  name = "iam_emr_profile_policy"
+  role = aws_iam_role.iam_emr_profile_role.id
+
+  policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [{
+        "Effect": "Allow",
+        "Resource": "*",
+        "Action": "*"
+    }]
+}
+EOF
+}
+
+#
+# EMR resources
+#
+resource "aws_emr_cluster" "emr-cluster" {
+  name = "my-demo-emr-cluster"
+  release_label = "v1"
+  applications  = ["Spark"]
+
+  termination_protection = false
+  keep_job_flow_alive_when_no_steps = true
+
+  ec2_attributes {
+    subnet_id = aws_subnet.EMR_public_subnet.id
+    emr_managed_master_security_group = aws_security_group.emr_master.id
+    emr_managed_slave_security_group = aws_security_group.emr_slave.id
+    instance_profile = aws_iam_instance_profile.emr_profile.arn
+  }
+
+  ebs_root_volume_size = "12"
+
+  master_instance_group {
+    name = "EMR master"
+    instance_type = "m4.large"
+    instance_count = "1"
+  }
+
+  core_instance_group {
+    name = "EMR slave"
+    instance_type = "m4.large"
+    instance_count = "1"
+  }
+
+  tags = {
+    Name = "My Demo Spark cluster"
+  }
+
+  autoscaling_policy = <<EOF
+{
+"Constraints": {
+  "MinCapacity": 1,
+  "MaxCapacity": 2
+},
+"Rules": [
+  {
+    "Name": "ScaleOutMemoryPercentage",
+    "Description": "Scale out if YARNMemoryAvailablePercentage is less than 15",
+    "Action": {
+      "SimpleScalingPolicyConfiguration": {
+        "AdjustmentType": "CHANGE_IN_CAPACITY",
+        "ScalingAdjustment": 1,
+        "CoolDown": 300
+      }
+    },
+    "Trigger": {
+      "CloudWatchAlarmDefinition": {
+        "ComparisonOperator": "LESS_THAN",
+        "EvaluationPeriods": 1,
+        "MetricName": "YARNMemoryAvailablePercentage",
+        "Namespace": "AWS/ElasticMapReduce",
+        "Period": 300,
+        "Statistic": "AVERAGE",
+        "Threshold": 15.0,
+        "Unit": "PERCENT"
+      }
+    }
+  }
+]
+}
+EOF
+
+  service_role = aws_iam_role.iam_emr_service_role.arn
+}
