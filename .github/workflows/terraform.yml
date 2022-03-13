@@ -48,7 +48,7 @@ jobs:
         continue-on-error: true
         working-directory: ./terraform
       - name: Terraform Destroy
-        id: Apply
+        id: Destroy
         run: terraform destroy
         continue-on-error: true
         working-directory: ./terraform
