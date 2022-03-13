@@ -175,7 +175,7 @@ EOF
 #
 resource "aws_emr_cluster" "emr-cluster" {
   name = "my-demo-emr-cluster"
-  release_label = "v1"
+  release_label = "emr-5.31.0"
   applications  = ["Spark"]
 
   termination_protection = false
