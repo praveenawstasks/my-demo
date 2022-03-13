@@ -15,12 +15,15 @@ terraform {
   }
 }
 
-module "vpc" {
-  source = "terraform_modules/aws-vpc"
-
-  vpc-location                        = "Virginia"
-  namespace                           = "my-demo-emr-vpc"
-  name                                = "vpc"
-  stage                               = "main"
-  vpc-cidr                            = "172.31.0.0/16"
+#module "vpc" {
+#  source = "terraform_modules/aws-vpc"
+#
+#  vpc-location                        = "Virginia"
+#  namespace                           = "my-demo-emr-vpc"
+#  name                                = "vpc"
+#  stage                               = "main"
+#  vpc-cidr                            = "172.31.0.0/16"
+#}
+resource "aws_vpc" "vpc" {
+  cidr_block           = "172.31.0.0/16"
 }
