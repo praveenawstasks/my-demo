@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 ### Backend ###
-# S3
+# S3 for terraform state
 ###############
 
 terraform {
