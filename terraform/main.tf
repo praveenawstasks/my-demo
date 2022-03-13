@@ -70,6 +70,11 @@ resource "aws_subnet" "emr_public_subnet" {
   }
 }
 
+resource "aws_route_table_association" "a" {
+  subnet_id      = aws_subnet.emr_public_subnet.id
+  route_table_id = aws_route_table.public-route-table.id
+}
+
 #
 # Security group resources
 #
@@ -177,7 +182,7 @@ resource "aws_emr_cluster" "emr-cluster" {
   name = "my-demo-emr-cluster"
   release_label = "emr-5.31.0"
   applications  = ["Spark"]
-  depends_on    = ["aws_route_table.public-route-table"]
+  depends_on    = [aws_route_table.public-route-table]
 
 
   termination_protection = false
