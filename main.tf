@@ -12,6 +12,3 @@ resource "aws_s3_bucket_object" "file_upload" {
   source = "driver_job.py"
 }
 
-output "my_bucket_file_version" {
-  value = "${aws_s3_bucket_object.file_upload.version_id}"
-}
