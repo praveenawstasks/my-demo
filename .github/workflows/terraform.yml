@@ -18,6 +18,8 @@ jobs:
         run: |
           aws --version
           aws s3api create-bucket --bucket my-demo-terraform-state-bucket --region us-east-1
+          echo 'Looking for code directory'
+          ls
       - name: Terraform Install
         uses: hashicorp/setup-terraform@v1
       - name: Terraform fmt
