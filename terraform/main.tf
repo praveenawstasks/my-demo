@@ -177,6 +177,8 @@ resource "aws_emr_cluster" "emr-cluster" {
   name = "my-demo-emr-cluster"
   release_label = "emr-5.31.0"
   applications  = ["Spark"]
+  depends_on    = ["aws_route_table.public-route-table"]
+
 
   termination_protection = false
   keep_job_flow_alive_when_no_steps = true
