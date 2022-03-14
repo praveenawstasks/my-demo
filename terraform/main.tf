@@ -82,6 +82,13 @@ resource "aws_security_group" "emr_master" {
   vpc_id                 = aws_vpc.vpc.id
   revoke_rules_on_delete = true
 
+  ingress {
+    from_port = 22
+    to_port = 22
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+}
+
   tags = {
     Name = "sg-my-demo-Master"
   }
@@ -189,6 +196,7 @@ resource "aws_emr_cluster" "emr-cluster" {
   keep_job_flow_alive_when_no_steps = true
 
   ec2_attributes {
+    key_name = "ec2_key_pair"
     subnet_id = aws_subnet.emr_public_subnet.id
     emr_managed_master_security_group = aws_security_group.emr_master.id
     emr_managed_slave_security_group = aws_security_group.emr_slave.id
