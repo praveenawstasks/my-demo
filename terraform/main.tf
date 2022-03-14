@@ -231,6 +231,12 @@ resource "aws_emr_cluster" "emr-cluster" {
     instance_count = "1"
   }
 
+  bootstrap_action {
+    path = "s3://praveen-demo-bucket1/bootstrap.sh"
+    name = "runif"
+    args = ["instance.isMaster=true", "echo running on master node"]
+  }
+
   tags = {
     Name = "My Demo Spark cluster"
   }
