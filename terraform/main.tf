@@ -237,6 +237,8 @@ resource "aws_emr_cluster" "emr-cluster" {
     args = ["instance.isMaster=true", "echo running on master node"]
   }
 
+  log_uri      = "${var.log_uri}"
+
   tags = {
     Name = "My Demo Spark cluster"
   }
