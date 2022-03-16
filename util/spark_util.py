@@ -4,10 +4,14 @@ class SparkClient:
     def __init__(self):
         self.spark = SparkSession.builder.appName("my-demo").getOrCreate()
 
-    def read_csv(self, bucket: str, key: str, header: bool = True, delimiter: str = '|'):
+    def read_csv(self, bucket: str, key: str, header: bool = True, delimiter: str = '|', infer_schema:bool = True):
         path = f"s3://{bucket}/{key}"
         print(f"Reading file from bucket : {bucket} and key : {key} and path : {path}")
-        return self.spark.read.option("header", header).option("delimiter", delimiter).csv(path)
+        return self.spark.read\
+            .option("header", header)\
+            .option("delimiter", delimiter) \
+            .option("inferSchema", infer_schema) \
+            .csv(path)
 
     def write_csv(self, df: DataFrame, bucket: str, key: str, header: bool = True, delimiter: str = '|'):
         path = f"s3://{bucket}/{key}"

@@ -23,10 +23,12 @@ class EtlProcess:
                     df.createOrReplaceTempView(table_name)
 
     def transform(self):
+        temp_table_name = ""
         transform_config = self.config['transform']
-        query = transform_config['query']
-        temp_table_name = transform_config['table_name']
-        self.spark_client.read_spark_query(query).createOrReplaceTempView(temp_table_name)
+        for config in transform_config:
+            query = config['query']
+            temp_table_name = config['table_name']
+            self.spark_client.read_spark_query(query).createOrReplaceTempView(temp_table_name)
         return temp_table_name
 
 
@@ -38,5 +40,9 @@ class EtlProcess:
         df = self.spark_client.read_spark_temp_table(temp_table_name)
         self.spark_client.write_csv(df, self.source_bucket, output_key, delimiter= delimiter)
         self.spark_client.read_spark_temp_table(temp_table_name).show()
-        pd = df.toPandas()
-        pd.to_csv(f"s3://{self.source_bucket}/output/output_file_name", delimiter=delimiter)
+        import glob
+        import shutil
+        temp_file_name = glob.golb('output' + "/*.csv")[0]
+        output_file_path = shutil.copy2(temp_file_name, output_key)
+        #pd.to_csv(f"s3://{self.source_bucket}/output/output_file_name", delimiter=delimiter)
+
