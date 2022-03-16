@@ -34,9 +34,10 @@ class Driver:
     def execute_job(self):
         logger.info('Execute job..')
         module = self.get_module()
-        module['domain'] = self.domain
-        logger.info(f"Etl configuration : {module.config}")
-        etl_obj = EtlProcess(self.source_bucket, self.source_key, module.config, self.spark_client)
+        config = module.config
+        config['domain'] = self.domain
+        logger.info(f"Etl configuration : {config}")
+        etl_obj = EtlProcess(self.source_bucket, self.source_key, config, self.spark_client)
         etl_obj.do_etl_process()
 
 if __name__ == "__main__":
