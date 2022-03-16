@@ -40,7 +40,7 @@ config = {
                    from product_data
                    group by 
                    external_search_engine,
-                   product,
+                   product
                    order by sum(cost) desc
                   """,
          'table_name': 'final_data'
