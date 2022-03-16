@@ -18,6 +18,9 @@ cd /home/hadoop
 
 pwd
 
+echo "removing the old code if any"
+rm -rf my-demo
+
 git clone https://github.com/praveenawstasks/my-demo.git
 
 echo "Cloning my-demo completed!"
