@@ -28,7 +28,7 @@ config = {
                        external_search_engine,
                        explode(split(product_list, ',')) as product_info 
                        from temp_hit_data
-                   )
+                   ) a
                   """,
          'table_name': 'product_data'
         },
