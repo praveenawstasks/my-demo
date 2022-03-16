@@ -62,9 +62,10 @@ class EtlProcess:
 
 
         logger.info("Writing as tab file for output...")
-        logger.info(temp_path)
-        print(glob.glob(temp_path + "*.csv"))
-        temp_file_name = glob.glob(temp_path + "*.csv")[0]
+        temp_s3_path = f"s3://{self.source_bucket}/{temp_path}"
+        logger.info(temp_s3_path)
+        print(glob.glob(temp_s3_path + "*.csv"))
+        temp_file_name = glob.glob(temp_s3_path + "*.csv")[0]
         output_path = f"{load_config['output_key_prefix']}{self.domain}"
         output_file_name = load_config['output_file_name']
         output_key = f"{output_path}/{output_file_name}"
