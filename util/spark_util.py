@@ -20,10 +20,13 @@ class SparkClient:
             .option("inferSchema", infer_schema) \
             .csv(path)
 
-    def write_csv(self, df: DataFrame, bucket: str, key: str, header: bool = True, delimiter: str = '|'):
+    def write_csv(self, df: DataFrame, bucket: str, key: str, header: bool = True, delimiter: str = '|', coalesce_count: int = None):
         path = f"s3://{bucket}/{key}"
         logger.info(f"Writing file to bucket : {bucket} and key : {key} and path : {path}")
-        df.write.option("header", header).option("delimiter", delimiter).mode("overwrite").csv(path)
+        if coalesce_count is not None:
+            df.coalesce(coalesce_count).write.option("header", header).option("delimiter", delimiter).mode("overwrite").csv(path)
+        else:
+            df.write.option("header", header).option("delimiter", delimiter).mode("overwrite").csv(path)
 
     def read_spark_temp_table(self, table_name: str):
         return self.spark.sql(f'SELECT * from {table_name}')

@@ -1,6 +1,8 @@
 from util.spark_util import SparkClient
 import logging
 import sys
+import glob
+import shutil
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.StreamHandler(sys.stdout))
@@ -13,6 +15,7 @@ class EtlProcess:
         self.source_key = source_key
         self.config = config
         self.spark_client = spark_client
+        self.domain = self.config['domain']
 
     def do_etl_process(self):
         self.extract()
@@ -49,15 +52,19 @@ class EtlProcess:
     def load(self, temp_table_name):
         logger.info('In Load step...')
         load_config = self.config['load']
-        output_file_name = load_config['output_file_name']
         delimiter = load_config['delimiter']
-        output_key = f"{load_config['output_key']}{output_file_name}"
+        temp_path = f'temp/{self.domain}/'
         df = self.spark_client.read_spark_temp_table(temp_table_name)
-        self.spark_client.write_csv(df, self.source_bucket, output_key, delimiter= delimiter)
+        logger.info(f"Writing dataframe into bucket : {self.source_bucket} and path : {temp_path}")
+        self.spark_client.write_csv(df, self.source_bucket, temp_path, delimiter= delimiter, coalesce_count=1)
         self.spark_client.read_spark_temp_table(temp_table_name).show()
-        import glob
-        import shutil
-        temp_file_name = glob.golb('output' + "/*.csv")[0]
+
+
+        logger.info("Writing as tab file for output...")
+        temp_file_name = glob.glob(temp_path + "/*.csv")[0]
+        output_path = f"{load_config['output_key_prefix']}{self.domain}"
+        output_file_name = load_config['output_file_name']
+        output_key = f"{output_path}/{output_file_name}"
         output_file_path = shutil.copy2(temp_file_name, output_key)
-        #pd.to_csv(f"s3://{self.source_bucket}/output/output_file_name", delimiter=delimiter)
+        logger.info(f'Written final output file at : {output_file_path}')
 
