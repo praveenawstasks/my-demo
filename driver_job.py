@@ -19,11 +19,13 @@ class Driver:
         self.source_bucket = source_bucket
         self.source_key = source_key
         self.spark_client = SparkClient()
+        self.domain = None
 
     def get_module(self):
         job_identifier = self.source_key.split('.')[0].split('/')[1]
         logger.info(f"Fetching module {job_identifier}...")
         module_name = module_map[job_identifier]
+        self.domain = module_name
         module_spec = importlib.util.find_spec(f"config.{module_name}")
         module = importlib.util.module_from_spec(module_spec)
         module_spec.loader.exec_module(module)
@@ -32,6 +34,7 @@ class Driver:
     def execute_job(self):
         logger.info('Execute job..')
         module = self.get_module()
+        module['domain'] = self.domain
         logger.info(f"Etl configuration : {module.config}")
         etl_obj = EtlProcess(self.source_bucket, self.source_key, module.config, self.spark_client)
         etl_obj.do_etl_process()

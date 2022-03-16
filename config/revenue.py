@@ -48,5 +48,5 @@ config = {
     ],
     'load': {'output_file_name': f"{today_date()}_SearchKeywordPerformance.tab",
              'delimiter': '	',
-             'output_key': "output/results/"}
+             'output_key_prefix': "output/"}
 }
