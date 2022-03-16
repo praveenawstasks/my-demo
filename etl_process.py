@@ -24,6 +24,7 @@ class EtlProcess:
 
     def extract(self):
         logger.info('In Extraction step...')
+        logger.info(f'Processing ETL for domain : {self.domain}...')
         extract_config = self.config['extract']
         for conf in extract_config:
             if conf['prefix'] in self.source_key:
