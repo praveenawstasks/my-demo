@@ -223,7 +223,7 @@ resource "aws_emr_cluster" "emr-cluster" {
   bootstrap_action {
     path = "s3://praveen-demo-bucket1/bootstrap.sh"
     name = "runif"
-    args = ["instance.isMaster=true", "echo running on master node"]
+    # args = ["instance.isMaster=true", "echo running on master node"]
   }
 
   log_uri      = "s3://my-demo-aws-emr-logs/"
