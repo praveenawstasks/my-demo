@@ -4,6 +4,7 @@ import argparse
 from etl_process import EtlProcess
 import logging
 import sys
+from util.util import SOURCE_BUCKET
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.StreamHandler(sys.stdout))
@@ -50,6 +51,6 @@ if __name__ == "__main__":
         '--source_bucket')
     args = parser.parse_args()
     logger.info(f'Parsed arguments : {args}')
-    source_bucket = args.source_key if 'source_bucket' in args else 'praveen-demo-bucket1'
+    source_bucket = args.source_key if 'source_bucket' in args else SOURCE_BUCKET
     driver = Driver(args.source_bucket, source_bucket)
     driver.execute_job()
