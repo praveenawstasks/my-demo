@@ -24,14 +24,7 @@ echo "Cloning my-demo completed!"
 cd my-demo
 
 echo "Installing boto3"
-sudo pip install -U
-pip install boto3
-echo "1-----------"
 sudo python3 -m pip install boto3
-echo "2---------------"
-sudo pip-3.7 install boto3
-echo "3--------------"
-sudo pip3 install boto3
 echo "Installing boto3 completed"
 
-echo "All bootstrap actions completed!"
+echo "All bootstrap actions completed!..."
