@@ -10,7 +10,9 @@ echo "Git installation completed..."
 
 echo "base packages installed..."
 
-pip install pandas
+echo "Installing boto3"
+
+pip install boto3
 
 echo "All bootstrap actions completed!"
 
