@@ -34,9 +34,9 @@ config = {
         },
         {'query': """
                    select 
-                   external_search_engine, 
-                   product, 
-                   sum(cost) as total_cost 
+                   external_search_engine as search_engine_domain, 
+                   product as search_key_word, 
+                   sum(cost) as revenue 
                    from product_data
                    group by 
                    external_search_engine,
