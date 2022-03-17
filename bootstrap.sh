@@ -10,10 +10,6 @@ echo "Git installation completed..."
 
 echo "base packages installed..."
 
-echo "Installing boto3"
-pip install boto3
-echo "Installing boto3 completed"
-
 cd /home/hadoop
 
 pwd
@@ -26,5 +22,16 @@ git clone https://github.com/praveenawstasks/my-demo.git
 echo "Cloning my-demo completed!"
 
 cd my-demo
+
+echo "Installing boto3"
+sudo pip install -U
+pip install boto3
+echo "1-----------"
+sudo python3 -m pip install boto3
+echo "2---------------"
+sudo pip-3.7 install boto3
+echo "3--------------"
+sudo pip3 install boto3
+echo "Installing boto3 completed"
 
 echo "All bootstrap actions completed!"
