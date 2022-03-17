@@ -50,6 +50,6 @@ if __name__ == "__main__":
         '--source_bucket')
     args = parser.parse_args()
     logger.info(f'Parsed arguments : {args}')
-
-    driver = Driver(args.source_bucket, args.source_key)
+    source_bucket = args.source_key if 'source_bucket' in args else 'praveen-demo-bucket1'
+    driver = Driver(args.source_bucket, source_bucket)
     driver.execute_job()
