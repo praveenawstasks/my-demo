@@ -13,13 +13,13 @@ terraform {
   }
 }
 
-resource "aws_s3_bucket_object" "object" {
-  bucket = "praveen-demo-bucket1"
-  key    = "bootstrap.sh"
-  source = "bootstrap.sh"
-
-  etag = "${filemd5("bootstrap.sh")}"
-}
+//resource "aws_s3_bucket_object" "object" {
+//  bucket = "praveen-demo-bucket1"
+//  key    = "bootstrap.sh"
+//  source = "bootstrap.sh"
+//
+//  etag = "${filemd5("bootstrap.sh")}"
+//}
 
 resource "aws_vpc" "vpc" {
   cidr_block           = "172.31.0.0/16"
