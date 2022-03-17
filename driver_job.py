@@ -51,7 +51,7 @@ if __name__ == "__main__":
         '--source_bucket')
     args = parser.parse_args()
     logger.info(f'Parsed arguments : {args}')
-    source_bucket = args.source_key if args['source_bucket'] is not None else SOURCE_BUCKET
+    source_bucket = args.source_key if args.source_bucket is not None else SOURCE_BUCKET
     logger.info(f'Source bucket : {source_bucket}')
     driver = Driver(args.source_bucket, source_bucket)
     driver.execute_job()
