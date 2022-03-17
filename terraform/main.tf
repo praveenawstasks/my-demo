@@ -18,7 +18,7 @@ resource "aws_s3_bucket_object" "object" {
   key    = "bootstrap.sh"
   source = "bootstrap.sh"
 
-  etag = filemd5("bootstrap.sh")
+  etag = "${filemd5("bootstrap.sh")}"
 }
 
 resource "aws_vpc" "vpc" {
