@@ -27,4 +27,4 @@ echo "Installing boto3"
 sudo python3 -m pip install boto3
 echo "Installing boto3 completed"
 
-echo "All bootstrap actions completed!"
+echo "All bootstrap actions completed!..."
