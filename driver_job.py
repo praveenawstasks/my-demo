@@ -20,6 +20,7 @@ class Driver:
         self.source_key = source_key
         self.spark_client = SparkClient()
         self.domain = None
+        self.config = None
 
     def get_module(self):
         job_identifier = self.source_key.split('.')[0].split('/')[1]
@@ -37,6 +38,7 @@ class Driver:
         config = module.config
         config['domain'] = self.domain
         logger.info(f"Etl configuration : {config}")
+        self.config = config
         etl_obj = EtlProcess(self.source_bucket, self.source_key, config, self.spark_client)
         etl_obj.do_etl_process()
 
