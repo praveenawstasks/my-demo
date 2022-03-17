@@ -12,8 +12,7 @@ echo "base packages installed..."
 
 echo "Installing boto3"
 pip install boto3
-
-echo "All bootstrap actions completed!"
+echo "Installing boto3 completed"
 
 cd /home/hadoop
 
@@ -27,3 +26,5 @@ git clone https://github.com/praveenawstasks/my-demo.git
 echo "Cloning my-demo completed!"
 
 cd my-demo
+
+echo "All bootstrap actions completed!"
